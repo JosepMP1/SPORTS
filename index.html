@@ -86,6 +86,20 @@
     .news-date { margin-top: auto; color: #788388; font-size: .75rem; font-weight: 700; }
     .empty-state { margin: 28px 0 0; padding: 24px; border: 1px dashed var(--line); color: var(--muted); text-align: center; }
 
+    .deep-dive { padding-block: 72px 78px; color: #fff; background: var(--night); }
+    .deep-dive .section-heading p { color: #bdc9c9; }
+    .deep-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; }
+    .deep-card { min-height: 250px; display: flex; flex-direction: column; align-items: flex-start; padding: 26px; border: 1px solid rgba(255,255,255,.16); background: var(--panel); }
+    .deep-card .news-tag { color: var(--lime); }
+    .deep-card h3 { margin: 0 0 12px; font-family: var(--serif); font-size: 1.5rem; line-height: 1.2; }
+    .deep-card p { margin: 0; color: #c5d0d0; font-size: .92rem; line-height: 1.7; }
+
+    .sports-guide { padding-block: 72px 82px; }
+    .guide-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; }
+    .guide-card { min-height: 190px; padding: 23px 20px; border-top: 3px solid var(--lime); background: #fff; }
+    .guide-card h3 { margin: 0 0 11px; font-family: var(--serif); font-size: 1.35rem; }
+    .guide-card p { margin: 0; color: #58656a; font-size: .88rem; line-height: 1.65; }
+
     .site-footer { color: #d3dddc; background: var(--night); }
     .footer-inner { min-height: 108px; display: flex; align-items: center; justify-content: space-between; gap: 20px; }
     .footer-brand { color: #fff; font-weight: 900; letter-spacing: .08em; }
@@ -98,9 +112,9 @@
     }
     @media (max-width: 680px) {
       .wrap { width: min(100% - 32px, 1200px); }
-      .nav { min-height: 66px; }
-      .navlinks { gap: 16px; }
-      .navlinks a { font-size: .82rem; }
+      .nav { min-height: 66px; flex-wrap: wrap; padding-block: 10px; }
+      .navlinks { flex-wrap: wrap; justify-content: flex-end; gap: 10px 14px; }
+      .navlinks a { font-size: .8rem; }
       .navlinks .nav-cta { padding: 9px 11px; }
       .hero { min-height: 490px; background-position: 58% center; }
       .hero-content { padding-block: 64px 54px; }
@@ -114,7 +128,15 @@
       .news-img { height: 210px; }
       .news-body { min-height: 0; padding: 20px; }
       .news-excerpt { margin-bottom: 20px; }
+      .deep-dive, .sports-guide { padding-block: 52px 58px; }
+      .deep-grid, .guide-grid { grid-template-columns: 1fr; gap: 12px; }
+      .deep-card { min-height: 0; padding: 22px; }
+      .guide-card { min-height: 0; }
       .footer-inner { min-height: 112px; align-items: flex-start; justify-content: center; flex-direction: column; gap: 8px; }
+    }
+    @media (min-width: 681px) and (max-width: 900px) {
+      .deep-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .guide-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     }
     @media (max-width: 380px) {
       .brand { font-size: 1rem; }
@@ -133,7 +155,8 @@
       <nav class="navlinks" aria-label="Navegación principal">
         <a href="#inicio">Inicio</a>
         <a href="#noticias">Noticias</a>
-        <a class="nav-cta" href="#noticias">Explorar</a>
+        <a href="#analisis">Análisis</a>
+        <a class="nav-cta" href="#deportes">Deportes</a>
       </nav>
     </div>
   </header>
@@ -201,8 +224,113 @@
             <time class="news-date" datetime="2026-10">Octubre 2026</time>
           </div>
         </article>
+        <article class="news-card" data-category="futbol">
+          <img class="news-img" src="https://images.unsplash.com/photo-1522778119026-d647f0596c20?auto=format&fit=crop&w=900&q=80" alt="Vista de un campo de fútbol preparado para un partido" loading="lazy">
+          <div class="news-body">
+            <span class="news-tag">Fútbol / Táctica</span>
+            <h3 class="news-title">La presión alta: defender lejos de la propia portería</h3>
+            <p class="news-excerpt">Por qué algunos equipos prefieren recuperar el balón cerca del área rival y qué riesgos asumen cuando saltan a presionar.</p>
+            <time class="news-date" datetime="2026-10">Octubre 2026</time>
+          </div>
+        </article>
+        <article class="news-card" data-category="baloncesto">
+          <img class="news-img" src="https://images.unsplash.com/photo-1519861531473-9200262188bf?auto=format&fit=crop&w=900&q=80" alt="Cancha de baloncesto durante un partido" loading="lazy">
+          <div class="news-body">
+            <span class="news-tag">Baloncesto / Análisis</span>
+            <h3 class="news-title">El pick and roll, una jugada que abre todo el ataque</h3>
+            <p class="news-excerpt">Bloqueo, lectura y toma de decisiones: repasamos las opciones que aparecen cuando dos jugadores coordinan la acción.</p>
+            <time class="news-date" datetime="2026-10">Octubre 2026</time>
+          </div>
+        </article>
+        <article class="news-card" data-category="motor">
+          <img class="news-img" src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=900&q=80" alt="Detalle de un coche de competición en el circuito" loading="lazy">
+          <div class="news-body">
+            <span class="news-tag">Motor / Estrategia</span>
+            <h3 class="news-title">Neumáticos y paradas: la carrera también se decide en boxes</h3>
+            <p class="news-excerpt">Una guía sencilla para entender cómo el desgaste, el tráfico y el momento de parar pueden cambiar una estrategia.</p>
+            <time class="news-date" datetime="2026-10">Octubre 2026</time>
+          </div>
+        </article>
+        <article class="news-card" data-category="tenis">
+          <img class="news-img" src="https://images.unsplash.com/photo-1595435934249-5df7ed86e1c0?auto=format&fit=crop&w=900&q=80" alt="Raqueta y pelota de tenis en una pista" loading="lazy">
+          <div class="news-body">
+            <span class="news-tag">Tenis / Técnica</span>
+            <h3 class="news-title">Saque y resto: los dos primeros golpes marcan el punto</h3>
+            <p class="news-excerpt">Cómo el servicio condiciona la devolución y por qué ganar ventaja desde el inicio es clave en todas las superficies.</p>
+            <time class="news-date" datetime="2026-10">Octubre 2026</time>
+          </div>
+        </article>
+        <article class="news-card" data-category="futbol">
+          <img class="news-img" src="https://images.unsplash.com/photo-1522778119026-d647f0596c20?auto=format&fit=crop&w=900&q=80" alt="Gradas de un estadio de fútbol llenas de aficionados" loading="lazy">
+          <div class="news-body">
+            <span class="news-tag">Fútbol / Cantera</span>
+            <h3 class="news-title">Formar talento: el largo camino de la cantera al primer equipo</h3>
+            <p class="news-excerpt">El desarrollo de un futbolista combina minutos de juego, preparación física, aprendizaje y un entorno que acompañe su crecimiento.</p>
+            <time class="news-date" datetime="2026-10">Octubre 2026</time>
+          </div>
+        </article>
+        <article class="news-card" data-category="baloncesto">
+          <img class="news-img" src="https://images.unsplash.com/photo-1519861531473-9200262188bf?auto=format&fit=crop&w=900&q=80" alt="Jugadores de baloncesto disputando una posesión" loading="lazy">
+          <div class="news-body">
+            <span class="news-tag">Baloncesto / Fundamentos</span>
+            <h3 class="news-title">Espacios y movimiento: las claves de un buen ataque</h3>
+            <p class="news-excerpt">Abrir la cancha, compartir el balón y moverse sin él ayuda a crear mejores opciones de tiro para todo el equipo.</p>
+            <time class="news-date" datetime="2026-10">Octubre 2026</time>
+          </div>
+        </article>
       </div>
       <p class="empty-state" id="empty-state" hidden>No encontramos noticias con esos criterios.</p>
+    </section>
+
+    <section class="deep-dive" id="analisis" aria-labelledby="analysis-title">
+      <div class="wrap">
+        <div class="section-heading">
+          <h2 id="analysis-title">Más allá del marcador</h2>
+          <p>Contexto, táctica y claves para entender el juego</p>
+        </div>
+        <div class="deep-grid">
+          <article class="deep-card">
+            <span class="news-tag">La pizarra / Fútbol</span>
+            <h3>¿Qué hace que un equipo controle un partido?</h3>
+            <p>Tener el balón no siempre significa dominar. La altura de la presión, la ocupación de los espacios y la velocidad para recuperarlo también definen quién lleva la iniciativa.</p>
+          </article>
+          <article class="deep-card">
+            <span class="news-tag">La pizarra / Baloncesto</span>
+            <h3>El valor de cada posesión</h3>
+            <p>El ritmo, la selección de tiro y el cuidado del balón cuentan una historia que el resultado por sí solo no explica. Aprende en qué fijarte durante un partido.</p>
+          </article>
+          <article class="deep-card">
+            <span class="news-tag">La pizarra / Motor</span>
+            <h3>Cómo leer una vuelta rápida</h3>
+            <p>Frenada, paso por curva y aceleración: cada sector revela dónde gana o pierde tiempo un piloto y cómo aprovecha el equilibrio de su coche.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="sports-guide wrap" id="deportes" aria-labelledby="guide-title">
+      <div class="section-heading">
+        <h2 id="guide-title">Explora cada deporte</h2>
+        <p>Una guía rápida para nuevos aficionados y curiosos</p>
+      </div>
+      <div class="guide-grid">
+        <article class="guide-card">
+          <h3>Fútbol</h3>
+          <p>Once jugadores por equipo, dos porterías y un juego de decisiones constantes. Descubre posiciones, competiciones y conceptos tácticos.</p>
+        </article>
+        <article class="guide-card">
+          <h3>Baloncesto</h3>
+          <p>Un deporte de ritmo y espacios donde cada ataque plantea un nuevo reto. Aprende sobre posiciones, faltas y sistemas de juego.</p>
+        </article>
+        <article class="guide-card">
+          <h3>Motor</h3>
+          <p>Mucho más que velocidad: pilotos, equipos, ingeniería y estrategia se combinan para marcar diferencias en cada circuito.</p>
+        </article>
+        <article class="guide-card">
+          <h3>Tenis</h3>
+          <p>Un duelo individual o por parejas que exige técnica y resistencia. Conoce el sistema de puntuación y las distintas superficies.</p>
+        </article>
+      </div>
     </section>
   </main>
 
