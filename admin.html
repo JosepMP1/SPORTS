@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Admin CMS | SPORTS</title>
+  <meta name="robots" content="noindex">
+  <style>
+    body{font-family:Arial,Helvetica,sans-serif;margin:20px}
+    .wrap{max-width:980px;margin:0 auto}
+    label{display:block;margin:8px 0 4px}
+    input[type=text],textarea,select{width:100%;padding:8px;border:1px solid #ccc;border-radius:4px}
+    button{margin-top:8px;padding:10px 14px}
+    .row{display:flex;gap:12px}
+    .col{flex:1}
+    pre{background:#f5f5f5;padding:12px;border-radius:6px}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Panel de administración (CMS ligero)</h1>
+    <p>Esta herramienta permite editar <strong>articles.json</strong> y crear/actualizar archivos en el repositorio mediante la API de GitHub. Requiere un token personal (PAT) con permisos <em>repo</em> para repositorios privados o <em>public_repo</em> para públicos.</p>
+
+    <h2>1) Autenticación</h2>
+    <label for="token">Token (PAT)</label>
+    <input id="token" type="text" placeholder="ghp_xxx...">
+    <label for="user">Tu usuario GitHub</label>
+    <input id="user" type="text" placeholder="JosepMP1">
+
+    <h2>2) Cargar lista de artículos</h2>
+    <button id="loadList">Cargar articles.json</button>
+    <pre id="output">Salida...</pre>
+
+    <h2>3) Editar metadatos de artículo</h2>
+    <label for="selectArticle">Selecciona artículo</label>
+    <select id="selectArticle"></select>
+
+    <label for="title">Título</label>
+    <input id="title" type="text">
+    <label for="author">Autor</label>
+    <input id="author" type="text">
+    <label for="date">Fecha (YYYY-MM-DD)</label>
+    <input id="date" type="text">
+    <label for="excerpt">Extracto</label>
+    <textarea id="excerpt" rows="3"></textarea>
+
+    <div class="row">
+      <div class="col">
+        <label for="slug">Slug (sin /)</label>
+        <input id="slug" type="text">
+      </div>
+      <div class="col">
+        <label for="category">Categoría</label>
+        <input id="category" type="text">
+      </div>
+    </div>
+
+    <label for="content">HTML del artículo (puedes pegar el .article-body)</label>
+    <textarea id="content" rows="12"></textarea>
+
+    <button id="saveArticle">Guardar artículo (crea/actualiza .html en /articles/ y actualiza articles.json)</button>
+
+    <h2>Notas de seguridad</h2>
+    <ul>
+      <li>No dejes el token en el navegador abierto.</li>
+      <li>El token se usa solo desde tu navegador para firmar las peticiones hacia api.github.com.</li>
+      <li>Si prefieres, crea un token con permisos mínimos y revócalo cuando no lo uses.</li>
+    </ul>
+  </div>
+
+  <script>
+    const owner = 'JosepMP1';
+    const repo = 'SPORTS';
+    const apiBase = 'https://api.github.com';
+
+    function log(msg){ document.getElementById('output').textContent = msg; }
+
+    async function getFile(path, token){
+      const url = `${apiBase}/repos/${owner}/${repo}/contents/${path}`;
+      const res = await fetch(url, { headers: { Authorization: 'token ' + token, Accept: 'application/vnd.github.v3+json' } });
+      if (!res.ok) throw new Error('No se pudo obtener: ' + res.status);
+      return await res.json();
+    }
+
+    async function putFile(path, contentBase64, message, token, sha){
+      const url = `${apiBase}/repos/${owner}/${repo}/contents/${path}`;
+      const body = { message, content: contentBase64 };
+      if (sha) body.sha = sha;
+      const res = await fetch(url, { method: 'PUT', headers: { Authorization: 'token ' + token, 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+      return await res.json();
+    }
+
+    document.getElementById('loadList').addEventListener('click', async ()=>{
+      const token = document.getElementById('token').value.trim();
+      try{
+        log('Cargando...');
+        const data = await getFile('articles.json', token);
+        const text = atob(data.content);
+        const json = JSON.parse(text);
+        window.cmsArticles = json.articles;
+        const sel = document.getElementById('selectArticle');
+        sel.innerHTML = json.articles.map(a=>`<option value="${a.slug}">${a.title}</option>`).join('');
+        log('articles.json cargado. Artículos: ' + json.articles.length);
+      }catch(e){ log('Error cargando articles.json: ' + e.message); }
+    });
+
+    document.getElementById('selectArticle').addEventListener('change', function(){
+      const slug = this.value; const a = (window.cmsArticles||[]).find(x=>x.slug===slug);
+      if(!a) return;
+      document.getElementById('title').value = a.title || '';
+      document.getElementById('author').value = a.author || '';
+      document.getElementById('date').value = a.date || '';
+      document.getElementById('excerpt').value = a.excerpt || '';
+      document.getElementById('slug').value = a.slug || '';
+      document.getElementById('category').value = a.category || '';
+      // try to load article HTML
+      (async ()=>{
+        try{
+          const token = document.getElementById('token').value.trim();
+          const file = await getFile('articles/' + slug + '.html', token);
+          const raw = atob(file.content);
+          // extract .article-body inner HTML
+          const tmp = document.createElement('div'); tmp.innerHTML = raw;
+          const body = tmp.querySelector('.article-body');
+          document.getElementById('content').value = body ? body.innerHTML.trim() : raw;
+        }catch(e){ document.getElementById('content').value = ''; }
+      })();
+    });
+
+    document.getElementById('saveArticle').addEventListener('click', async ()=>{
+      const token = document.getElementById('token').value.trim();
+      if(!token){ alert('Introduce tu token'); return; }
+      const title = document.getElementById('title').value.trim();
+      const author = document.getElementById('author').value.trim();
+      const date = document.getElementById('date').value.trim();
+      const excerpt = document.getElementById('excerpt').value.trim();
+      const slug = document.getElementById('slug').value.trim();
+      const category = document.getElementById('category').value.trim();
+      const content = document.getElementById('content').value;
+      if(!slug || !title){ alert('Slug y título son obligatorios'); return; }
+
+      try{
+        log('Actualizando archivo HTML...');
+        const html = `<!DOCTYPE html><html><head><meta charset=\"utf-8\"></head><body><article class=\"article-body\">${content}</article></body></html>`;
+        const base64 = btoa(unescape(encodeURIComponent(html)));
+        let sha;
+        try{ const existing = await getFile('articles/' + slug + '.html', token); sha = existing.sha; }catch(e){}
+        const put = await putFile('articles/' + slug + '.html', base64, `Actualiza artículo ${slug}`, token, sha);
+        log('HTML guardado: ' + (put.content ? 'ok' : JSON.stringify(put)));
+
+        // actualizar articles.json
+        log('Actualizando articles.json...');
+        const listFile = await getFile('articles.json', token);
+        const listText = atob(listFile.content);
+        const listJson = JSON.parse(listText);
+        const idx = listJson.articles.findIndex(a=>a.slug===slug);
+        const newItem = { slug, title, category, sport: category.charAt(0).toUpperCase() + category.slice(1), excerpt, author, date, readTime: '5 min de lectura', featured: false, image: '', href: 'articles/' + slug + '.html' };
+        if(idx >= 0) listJson.articles[idx] = newItem; else listJson.articles.unshift(newItem);
+        const newBase = btoa(unescape(encodeURIComponent(JSON.stringify(listJson, null, 2))));
+        const putList = await putFile('articles.json', newBase, `Actualiza articles.json - ${slug}`, token, listFile.sha);
+        log('articles.json actualizado. Commit: ' + (putList.commit ? putList.commit.sha : JSON.stringify(putList)));
+      }catch(e){ log('Error guardando: ' + e.message); }
+    });
+  </script>
+</body>
+</html>

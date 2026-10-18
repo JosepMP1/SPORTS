@@ -169,24 +169,24 @@
     <section class="deep-dive" id="analisis" aria-labelledby="analysis-title">
       <div class="wrap">
         <div class="section-heading">
-          <h2 id="analysis-title">Más allá del marcador</h2>
-          <p>Contexto, táctica y claves para entender el juego</p>
+          <h2 id="analysis-title">Análisis en profundidad</h2>
+          <p>Análisis accionable: tácticas, decisiones técnicas y variables cuantificables para entender el rendimiento.</p>
         </div>
         <div class="deep-grid">
           <article class="deep-card">
-            <span class="news-tag">La pizarra / Fútbol</span>
-            <h3>La presión alta exige estructura y decisión</h3>
-            <p>Cuando un equipo quiere presionar en bloque, la clave es la coordinación entre líneas. Un hueco pequeño puede desarmar la presión completa.</p>
+            <span class="news-tag">Fútbol</span>
+            <h3>Control posicional y métricas clave</h3>
+            <p>Qué medir: pases progresivos por 90, presión efectiva (PPDA), transiciones ganadoras. Cómo interpretarlo: identifica si un equipo prioriza posesión segura o progresión rápida y qué datos validar para cada hipótesis.</p>
           </article>
           <article class="deep-card">
-            <span class="news-tag">La pizarra / Baloncesto</span>
-            <h3>La lectura del espacio cambia la posesión</h3>
-            <p>El balón se mueve más rápido, pero la decisividad llega cuando cada jugador entiende qué hace la defensa antes de que se cierre la posición.</p>
+            <span class="news-tag">Baloncesto</span>
+            <h3>Evaluación por posesión</h3>
+            <p>Qué medir: puntos/100 posesiones, porcentaje asistencias/turnovers, efectivo en espacios (eFG%). Herramientas prácticas: usar línea de tiempo por cuarto para detectar caídas de ritmo y ajustar rotaciones.</p>
           </article>
           <article class="deep-card">
-            <span class="news-tag">La pizarra / Motor</span>
-            <h3>La estrategia decide casi tanto como la velocidad</h3>
-            <p>Una gran vuelta no se mide solo por el tiempo final, sino por el equilibrio, el desgaste y la gestión de la carrera.</p>
+            <span class="news-tag">Motor</span>
+            <h3>Estrategia y telemetría</h3>
+            <p>Qué medir: delta por sector, degradación por vuelta, ventana de temperatura óptima de neumáticos. Cómo aplicar: simular ventanas de parada y comparar tiempo perdido vs. tiempo ganado por stint.</p>
           </article>
         </div>
       </div>
@@ -258,7 +258,7 @@
               <span>${formatDate(article.date)}</span>
               <span>${article.readTime}</span>
             </div>
-            <a href="${article.href}" style="margin-top:14px;color:var(--night);font-weight:800;">Leer artículo →</a>
+            <a href="article.html?slug=${article.slug}" style="margin-top:14px;color:var(--night);font-weight:800;">Leer artículo →</a>
           </div>
         </article>
       `).join('');
