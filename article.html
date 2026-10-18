@@ -10,10 +10,13 @@
     body{margin:0;font-family:var(--sans);background:var(--paper);color:var(--ink)}
     .wrap{width:min(1100px,calc(100% - 48px));margin:0 auto;padding:28px}
     .site-header{background:rgba(7,20,29,.96);color:#fff;padding:14px 0}
-    .brand{font-weight:900;letter-spacing:.08em;color:#fff}
+    .brand{font-weight:900;letter-spacing:.08em;color:#fff;text-decoration:none}
     .article-title{font-family:var(--serif);font-size:2.4rem;margin:18px 0}
     .meta{color:#657176;margin-bottom:18px}
-    .content{background:#fff;padding:26px;border:1px solid var(--line);border-radius:10px}
+    .content{background:#fff;padding:26px;border:1px solid var(--line);border-radius:10px;line-height:1.8}
+    .content h2{font-size:1.6rem;margin:1.2em 0 .5em}
+    .content p{margin:0 0 1em}
+    .content img{max-width:100%;border-radius:10px;margin:1em 0}
     .sidebar{margin-top:18px}
     .related{list-style:none;padding:0}
     .related li{margin:8px 0}
@@ -23,7 +26,7 @@
 <body>
   <header class="site-header">
     <div class="wrap">
-      <a class="brand" href="/">● SPORTS</a>
+      <a class="brand" href="./">● SPORTS</a>
     </div>
   </header>
   <main class="wrap">
@@ -43,23 +46,22 @@
   </main>
 
   <script>
-    // Extrae slug de querystring
     const params = new URLSearchParams(location.search);
     const slug = params.get('slug');
-    const owner = 'JosepMP1';
-    const repo = 'SPORTS';
 
     function formatDate(value) {
       try {
         const d = new Date(value + 'T00:00:00');
         return new Intl.DateTimeFormat('es-ES', { day: 'numeric', month: 'long', year: 'numeric' }).format(d);
-      } catch(e) { return value; }
+      } catch (e) {
+        return value;
+      }
     }
 
     if (!slug) {
       document.getElementById('body').textContent = 'No se indicó el artículo.';
     } else {
-      fetch('/articles.json')
+      fetch('./articles.json')
         .then(r => r.json())
         .then(data => {
           const article = (data.articles || []).find(a => a.slug === slug);
@@ -67,37 +69,29 @@
             document.getElementById('body').textContent = 'Artículo no encontrado.';
             return;
           }
+
           document.getElementById('title').textContent = article.title;
           document.getElementById('tag').textContent = article.sport;
           document.getElementById('metaInfo').textContent = `${article.author} — ${formatDate(article.date)} — ${article.readTime}`;
 
-          // Cargar el HTML estático del artículo y extraer el .article-body
-          fetch('/articles/' + slug + '.html')
+          fetch('./articles/' + slug + '.html')
             .then(r => r.text())
             .then(html => {
-              try {
-                const parser = new DOMParser();
-                const doc = parser.parseFromString(html, 'text/html');
-                const body = doc.querySelector('.article-body') || doc.querySelector('article') || doc.body;
-                document.getElementById('body').innerHTML = body ? body.innerHTML : html;
+              const parser = new DOMParser();
+              const doc = parser.parseFromString(html, 'text/html');
+              const body = doc.querySelector('.article-body') || doc.querySelector('article') || doc.body;
+              document.getElementById('body').innerHTML = body ? body.innerHTML : html;
 
-                // Poblar relacionados
-                const related = (data.articles || []).filter(a => a.category === article.category && a.slug !== article.slug).slice(0,5);
-                const list = document.getElementById('relatedList');
-                list.innerHTML = related.map(r => `<li><a href="/article.html?slug=${r.slug}">${r.title}</a></li>`).join('');
+              const related = (data.articles || []).filter(a => a.category === article.category && a.slug !== article.slug).slice(0, 5);
+              const list = document.getElementById('relatedList');
+              list.innerHTML = related.map(item => `<li><a href="./article.html?slug=${item.slug}">${item.title}</a></li>`).join('');
 
-                // Ajustar rutas de enlaces relativos dentro del artículo (si los hay)
-                document.getElementById('body').querySelectorAll('a').forEach(a => {
-                  const href = a.getAttribute('href');
-                  if (href && !href.startsWith('http') && !href.startsWith('/')) {
-                    // Convertir enlace relativo para que apunte dentro del /articles/ si corresponde
-                    a.setAttribute('href', '/articles/' + href);
-                  }
-                });
-
-              } catch (e) {
-                document.getElementById('body').textContent = 'Error al renderizar el artículo.';
-              }
+              document.getElementById('body').querySelectorAll('a').forEach(link => {
+                const href = link.getAttribute('href');
+                if (href && !href.startsWith('http') && !href.startsWith('/') && !href.startsWith('#')) {
+                  link.setAttribute('href', './' + href);
+                }
+              });
             })
             .catch(() => {
               document.getElementById('body').textContent = 'No se pudo cargar el contenido del artículo.';
