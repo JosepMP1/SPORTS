@@ -51,6 +51,84 @@
       "featured": false,
       "image": "https://images.unsplash.com/photo-1622279457486-62dcc4a431d6?auto=format&fit=crop&w=1200&q=80",
       "href": "articles/tenis-primer-golpe.html"
+    },
+    {
+      "slug": "posesion-valor-expected-goals",
+      "title": "Posesión con propósito: cómo medir su verdadero valor",
+      "sport": "Fútbol",
+      "category": "futbol",
+      "excerpt": "La posesión no es un fin: es una herramienta. Introducimos métricas como xG, pases progresivos y entradas en el área para entender cuándo la posesión genera peligro.",
+      "author": "SPORTS",
+      "date": "2026-10-14",
+      "readTime": "7 min de lectura",
+      "featured": false,
+      "image": "https://images.unsplash.com/photo-1508057198894-247b23fe5ade?auto=format&fit=crop&w=1200&q=80",
+      "href": "articles/posesion-valor-expected-goals.html"
+    },
+    {
+      "slug": "perfil-mediapunta-moderno",
+      "title": "Perfil: cómo analizar a un mediapunta moderno",
+      "sport": "Fútbol",
+      "category": "futbol",
+      "excerpt": "Más allá de los goles y asistencias: posicionamiento, enlaces con interiores y creación de líneas de pase. Una guía para evaluar a ese jugador que marca la diferencia.",
+      "author": "SPORTS",
+      "date": "2026-10-13",
+      "readTime": "6 min de lectura",
+      "featured": false,
+      "image": "https://images.unsplash.com/photo-1521412644187-c49fa049e84d?auto=format&fit=crop&w=1200&q=80",
+      "href": "articles/perfil-mediapunta-moderno.html"
+    },
+    {
+      "slug": "baloncesto-seleccion-de-tiro",
+      "title": "Selección de tiro: cuándo arriesgar y cuándo mover el balón",
+      "sport": "Baloncesto",
+      "category": "baloncesto",
+      "excerpt": "Decisiones instantáneas que determinan el éxito ofensivo. Analizamos situaciones tipo y cómo priorizar el tiro eficiente sobre el audaz.",
+      "author": "SPORTS",
+      "date": "2026-10-12",
+      "readTime": "5 min de lectura",
+      "featured": false,
+      "image": "https://images.unsplash.com/photo-1517649763962-0c623066013b?auto=format&fit=crop&w=1200&q=80",
+      "href": "articles/baloncesto-seleccion-de-tiro.html"
+    },
+    {
+      "slug": "motor-estrategias-neumaticos",
+      "title": "Estrategias de neumáticos: ganar con la parada correcta",
+      "sport": "Motor",
+      "category": "motor",
+      "excerpt": "La elección y el momento de la parada pueden decidir una carrera. Explicamos cómo leer la degradación y convertir datos en ventaja estratégica.",
+      "author": "SPORTS",
+      "date": "2026-10-11",
+      "readTime": "6 min de lectura",
+      "featured": false,
+      "image": "https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=1200&q=80",
+      "href": "articles/motor-estrategias-neumaticos.html"
+    },
+    {
+      "slug": "tenis-preparacion-mental",
+      "title": "Preparación mental: rutinas para mantener la concentración en partidos largos",
+      "sport": "Tenis",
+      "category": "tenis",
+      "excerpt": "Rutinas prácticas para gestionar la fatiga mental, mantener foco y recuperar la calma en puntos decisivos. Técnicas aplicables para entrenamientos y competiciones.",
+      "author": "SPORTS",
+      "date": "2026-10-10",
+      "readTime": "5 min de lectura",
+      "featured": false,
+      "image": "https://images.unsplash.com/photo-1524492412937-4961bafc6f71?auto=format&fit=crop&w=1200&q=80",
+      "href": "articles/tenis-preparacion-mental.html"
+    },
+    {
+      "slug": "fichajes-metricas-eficiencia",
+      "title": "Más allá del precio: métricas clave en fichajes eficientes",
+      "sport": "Fútbol",
+      "category": "futbol",
+      "excerpt": "Analizar fichajes con métricas robustas reduce el riesgo: usos de modelos de ajuste por edad, minutos ponderados y adaptación táctica para predecir impacto real.",
+      "author": "SPORTS",
+      "date": "2026-10-09",
+      "readTime": "7 min de lectura",
+      "featured": false,
+      "image": "https://images.unsplash.com/photo-1509529711801-deac231b9b7c?auto=format&fit=crop&w=1200&q=80",
+      "href": "articles/fichajes-metricas-eficiencia.html"
     }
   ]
 }
