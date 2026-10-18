@@ -1,23 +1,11 @@
 # SPORTS
 
-Portal deportivo estático de noticias, análisis y contenidos de fútbol, baloncesto, motor y tenis.
+Portal de noticias y análisis deportivos de fútbol, baloncesto, motor y tenis. La portada carga los metadatos desde `articles.json` y los artículos se leen desde sus páginas en `articles/`.
 
-## Panel editorial
+## Publicar y editar artículos
 
-La web usa [Decap CMS](https://decapcms.org/) para editar artículos desde `/admin/`. El contenido se guarda en `content/articles.json` y los cambios se versionan en Git; no hace falta mantener un servidor propio.
+El panel editorial está en [`admin.html`](./admin.html). Usa la API de contenidos de GitHub para guardar el texto de un artículo en `articles/<slug>.html` y actualizar `articles.json`; los cambios guardados crean commits en el repositorio.
 
-### Activación en Netlify
+Para usarlo, introduce el token de GitHub y el usuario del repositorio. Crea un token con permisos mínimos de contenido para este repositorio y retíralo al terminar si ya no lo necesitas. El panel no guarda el token, pero se utiliza desde el navegador para realizar peticiones a GitHub.
 
-1. Importa el repositorio `JosepMP1/SPORTS` en Netlify y despliega la rama `main`. El archivo `netlify.toml` publica la raíz del repositorio sin paso de compilación.
-2. En la configuración del sitio, activa **Identity** y limita el registro a invitaciones.
-3. En **Identity > Services**, activa **Git Gateway** y conecta el repositorio de GitHub del sitio.
-4. Invita desde Identity a las personas que podrán editar y publicar.
-5. Abre `https://<tu-sitio>.netlify.app/admin/` e inicia sesión. Las publicaciones usan flujo editorial para poder revisar los cambios antes de publicarlos.
-
-La autenticación de Netlify y la conexión de Git Gateway se habilitan desde el panel de Netlify; no se guardan credenciales en este repositorio.
-
-### Crear o editar un artículo
-
-En el panel, abre **Artículos > Noticias y artículos**. Completa el titular, el deporte, la competición, el resumen, la fecha, la imagen, su texto alternativo y el artículo. Separa los párrafos del artículo con una línea en blanco. La URL debe ser única y usar solo minúsculas, números y guiones, por ejemplo `analisis-del-partido`.
-
-Los artículos publicados aparecen en la portada y cada uno tiene su propia página de lectura. Los filtros por deporte y la búsqueda se generan a partir de los mismos datos.
+Los artículos publicados deben tener un slug único, coincidir con el nombre del archivo HTML de `articles/` y disponer de sus metadatos en `articles.json`.
