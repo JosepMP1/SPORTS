@@ -1,0 +1,58 @@
+backend:
+  name: git-gateway
+  branch: main
+
+publish_mode: editorial_workflow
+media_folder: uploads
+public_folder: /uploads
+
+collections:
+  - name: articles
+    label: Artículos
+    files:
+      - name: articles
+        label: Noticias y artículos
+        file: content/articles.json
+        fields:
+          - name: articles
+            label: Artículos
+            widget: list
+            summary: "{{fields.title}} — {{fields.category}}"
+            fields:
+              - label: URL del artículo
+                name: slug
+                widget: string
+                hint: "Solo minúsculas, números y guiones. Debe ser único."
+              - label: Deporte
+                name: category
+                widget: select
+                options:
+                  - { label: Fútbol, value: futbol }
+                  - { label: Baloncesto, value: baloncesto }
+                  - { label: Motor, value: motor }
+                  - { label: Tenis, value: tenis }
+              - label: Competición o sección
+                name: competition
+                widget: string
+              - label: Titular
+                name: title
+                widget: string
+              - label: Resumen
+                name: excerpt
+                widget: text
+              - label: Fecha
+                name: date
+                widget: datetime
+                date_format: YYYY-MM-DD
+                time_format: false
+                format: YYYY-MM-DD
+              - label: Imagen de portada
+                name: image
+                widget: image
+              - label: Texto alternativo de imagen
+                name: image_alt
+                widget: string
+              - label: Artículo
+                name: body
+                widget: text
+                hint: "Separa los párrafos con una línea en blanco."
