@@ -46,13 +46,21 @@
     .navlinks a:hover, .navlinks a:focus-visible { color: var(--lime); }
     .navlinks .nav-cta { padding: 10px 15px; color: var(--night); background: var(--lime); font-weight: 800; }
 
+    /* Banner que muestra la última actualización y opción de forzar recarga */
+    .update-banner { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 8px 16px; background: rgba(182,243,106,0.06); border-top: 1px solid rgba(182,243,106,0.08); color: #0b2615; font-weight: 700; }
+    .update-info { display: flex; gap: 12px; align-items: center; font-size: .95rem; }
+    .update-badge { background: var(--lime); color: var(--night); padding: 6px 10px; border-radius: 18px; font-size: .85rem; }
+    .update-actions { display: flex; gap: 8px; align-items: center; }
+    .btn { background: transparent; border: 1px solid var(--line); padding: 8px 12px; border-radius: 6px; cursor: pointer; font-weight: 700; }
+    .btn.primary { background: var(--lime); color: var(--night); border-color: transparent; }
+
     .hero {
       min-height: 510px;
       display: grid;
       align-items: end;
       color: #fff;
       background-color: var(--night);
-      background-image: linear-gradient(90deg, rgba(4,16,23,.84) 0%, rgba(4,16,23,.50) 52%, rgba(4,16,23,.08) 100%), linear-gradient(0deg, rgba(4,16,23,.35), transparent 45%), url("https://images.unsplash.com/photo-1508098682722-e99c43a406b2?auto=format&fit=crop&w=2000&q=85");
+      background-image: linear-gradient(90deg, rgba(4,16,23,.84) 0%, rgba(4,16,23,.50) 52%, rgba(4,16,23,.08) 100%), linear-gradient(0deg, rgba(4,16,23,.35), transparent 45%), url("https://images.[...]");
       background-position: center;
       background-size: cover;
     }
@@ -70,13 +78,13 @@
     .section-heading p { margin: 0 0 3px; color: var(--muted); font-size: .9rem; }
     .news-tools { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 22px; }
     .filter-list { display: flex; flex-wrap: wrap; gap: 8px; }
-    .filter-button { min-height: 38px; padding: 8px 14px; border: 1px solid var(--line); border-radius: 2px; color: #425157; background: transparent; font-size: .82rem; font-weight: 750; transition: color .2s ease, background .2s ease, border-color .2s ease; }
+    .filter-button { min-height: 38px; padding: 8px 14px; border: 1px solid var(--line); border-radius: 2px; color: #425157; background: transparent; font-size: .82rem; font-weight: 750; transition: border-color .15s ease, color .15s ease; }
     .filter-button:hover { border-color: var(--ink); }
     .filter-button[aria-pressed="true"] { border-color: var(--night); color: #fff; background: var(--night); }
     .search-box { width: min(290px, 100%); min-height: 40px; padding: 9px 12px; border: 1px solid var(--line); border-radius: 2px; color: var(--ink); background: #fff; }
     .search-box:focus-visible { outline: 3px solid #8cac58; outline-offset: 2px; }
     .news-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px; }
-    .news-card { min-width: 0; background: #fff; border: 1px solid #e5e8e3; transition: transform .2s ease, box-shadow .2s ease; }
+    .news-card { min-width: 0; background: #fff; border: 1px solid #e5e8e3; transition: transform .2s ease, box-shadow .2s ease; position: relative; }
     .news-card:hover { transform: translateY(-3px); box-shadow: 0 14px 32px rgba(14, 34, 39, .09); }
     .news-img { width: 100%; height: 230px; object-fit: cover; background: #dce2df; }
     .news-body { display: flex; min-height: 220px; flex-direction: column; align-items: flex-start; padding: 22px 24px 20px; }
@@ -85,6 +93,9 @@
     .news-excerpt { margin: 0 0 18px; color: #58656a; font-size: .92rem; line-height: 1.65; }
     .news-date { margin-top: auto; color: #788388; font-size: .75rem; font-weight: 700; }
     .empty-state { margin: 28px 0 0; padding: 24px; border: 1px dashed var(--line); color: var(--muted); text-align: center; }
+
+    /* Marca visual para noticias añadidas recientemente */
+    .news-new { position: absolute; top: 12px; left: 12px; background: var(--lime); color: var(--night); padding: 6px 10px; border-radius: 14px; font-weight: 900; font-size: .78rem; }
 
     .deep-dive { padding-block: 72px 78px; color: #fff; background: var(--night); }
     .deep-dive .section-heading p { color: #bdc9c9; }
@@ -133,6 +144,7 @@
       .deep-card { min-height: 0; padding: 22px; }
       .guide-card { min-height: 0; }
       .footer-inner { min-height: 112px; align-items: flex-start; justify-content: center; flex-direction: column; gap: 8px; }
+      .update-banner { padding: 8px 12px; font-size: .9rem; }
     }
     @media (min-width: 681px) and (max-width: 900px) {
       .deep-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -158,6 +170,17 @@
         <a href="#analisis">Análisis</a>
         <a class="nav-cta" href="#deportes">Deportes</a>
       </nav>
+    </div>
+    <!-- Banner visible para mostrar la última actualización y forzar recarga -->
+    <div class="wrap update-banner" role="status" aria-live="polite">
+      <div class="update-info">
+        <span class="update-badge" id="update-badge">ACTUALIZADO</span>
+        <span id="update-text">Última actualización: —</span>
+      </div>
+      <div class="update-actions">
+        <button class="btn" id="show-changes">Ver últimos cambios</button>
+        <button class="btn primary" id="force-refresh">Forzar actualización</button>
+      </div>
     </div>
   </header>
 
@@ -370,6 +393,88 @@
     });
 
     searchInput.addEventListener("input", updateNews);
+
+    // --- Nuevas funcionalidades para mostrar los últimos cambios ---
+    const updateText = document.getElementById('update-text');
+    const updateBadge = document.getElementById('update-badge');
+    const forceRefreshBtn = document.getElementById('force-refresh');
+    const showChangesBtn = document.getElementById('show-changes');
+
+    // Mostrar fecha de última modificación conocida por el navegador (si existe)
+    function formatDate(d) {
+      try {
+        return new Date(d).toLocaleString('es-ES', { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+      } catch (e) {
+        return d;
+      }
+    }
+
+    const lastMod = document.lastModified || new Date().toString();
+    updateText.textContent = 'Última actualización: ' + formatDate(lastMod);
+
+    // Forzar recarga de imágenes (cache-bust) para que se vean los últimos cambios en recursos estáticos
+    forceRefreshBtn.addEventListener('click', () => {
+      const ts = Date.now();
+      document.querySelectorAll('img').forEach(img => {
+        // Añade o reemplaza el parámetro ?v=timestamp para evitar cache
+        try {
+          const url = new URL(img.src);
+          url.searchParams.set('v', ts);
+          img.src = url.toString();
+        } catch (e) {
+          // Si no es una URL absoluta, reconstruirla con la propia ruta
+          img.src = img.src.split('?')[0] + '?v=' + ts;
+        }
+      });
+      updateBadge.textContent = 'ACTUALIZADO';
+      updateText.textContent = 'Última actualización: ' + formatDate(new Date());
+    });
+
+    // Mostrar una lista rápida de títulos recientes (los 3 con fecha más reciente según <time datetime>)
+    showChangesBtn.addEventListener('click', () => {
+      // Construir una lista de pares {title, date}
+      const items = [];
+      newsCards.forEach(card => {
+        const title = card.querySelector('.news-title')?.textContent?.trim() || 'Sin título';
+        const timeEl = card.querySelector('time[datetime]');
+        const dateStr = timeEl ? timeEl.getAttribute('datetime') : '';
+        // Interpretar fechas incompletas (YYYY-MM) como primer día del mes
+        let parsed;
+        if (/^\d{4}-\d{2}$/i.test(dateStr)) {
+          parsed = new Date(dateStr + '-01');
+        } else if (dateStr) {
+          parsed = new Date(dateStr);
+        } else {
+          parsed = new Date();
+        }
+        items.push({ title, date: parsed });
+      });
+      items.sort((a, b) => b.date - a.date);
+      const top = items.slice(0, 5);
+      const list = top.map(it => `• ${it.title} — ${it.date.toLocaleDateString('es-ES')}`).join('\n');
+      alert('Últimos cambios:\n\n' + list);
+    });
+
+    // Añadir una etiqueta "Nuevo" a los 3 artículos más recientes (según time[datetime])
+    (function markRecent() {
+      const parsed = newsCards.map(card => {
+        const t = card.querySelector('time[datetime]');
+        let d;
+        if (t) {
+          const val = t.getAttribute('datetime');
+          if (/^\d{4}-\d{2}$/i.test(val)) d = new Date(val + '-01'); else d = new Date(val);
+        } else d = new Date();
+        return { card, date: d };
+      });
+      parsed.sort((a, b) => b.date - a.date);
+      parsed.slice(0, 3).forEach(item => {
+        const badge = document.createElement('span');
+        badge.className = 'news-new';
+        badge.textContent = 'NUEVO';
+        item.card.appendChild(badge);
+      });
+    })();
+
   </script>
 </body>
 </html>
