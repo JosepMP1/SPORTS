@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+  <channel>
+    <title>SPORTS - Últimas noticias de deporte</title>
+    <link>https://josepmp1.github.io/SPORTS/</link>
+    <description>Actualidad, análisis y reportajes de fútbol, baloncesto, motor y tenis.</description>
+    <language>es-es</language>
+    <pubDate>Sat, 18 Oct 2026 12:00:00 GMT</pubDate>
+    <item>
+      <title>El Clásico vuelve a encender la presión en LaLiga</title>
+      <link>https://josepmp1.github.io/SPORTS/articles/barcelona-madrid-clasico-2026.html</link>
+      <description>La pelea por el liderato vuelve a centrarse en el duelo entre Barcelona y Real Madrid, con intensidad táctica y decisiones que marcan el curso de la temporada.</description>
+      <pubDate>Sat, 18 Oct 2026 10:00:00 GMT</pubDate>
+    </item>
+    <item>
+      <title>La NBA acelera un nuevo ciclo con estrellas y ritmo extremo</title>
+      <link>https://josepmp1.github.io/SPORTS/articles/temporada-nba-sensacion-2026.html</link>
+      <description>La temporada 2026-27 llega marcada por jóvenes líderes, velocidad y decisiones más difíciles en cada posesión.</description>
+      <pubDate>Fri, 17 Oct 2026 10:00:00 GMT</pubDate>
+    </item>
+    <item>
+      <title>La Fórmula 1 de 2026 pone el foco en neumáticos y estrategia</title>
+      <link>https://josepmp1.github.io/SPORTS/articles/f1-2026-estrategia-neumaticos.html</link>
+      <description>Los equipos trabajan cada detalle del rendimiento en pista con una estrategia mucho más sensible al desgaste.</description>
+      <pubDate>Thu, 16 Oct 2026 10:00:00 GMT</pubDate>
+    </item>
+    <item>
+      <title>El tenis español mantiene el pulso en un circuito cada vez más exigente</title>
+      <link>https://josepmp1.github.io/SPORTS/articles/tenis-espanol-2026.html</link>
+      <description>Alcaraz y el bloque español siguen marcando el calendario con exigencia máxima en cada superficie.</description>
+      <pubDate>Wed, 15 Oct 2026 10:00:00 GMT</pubDate>
+    </item>
+  </channel>
+</rss>
