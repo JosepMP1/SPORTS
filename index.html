@@ -5,8 +5,8 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>SPORTS — Noticias deportivas, análisis y última hora</title>
   <meta name="description" content="Portal deportivo con última hora, reportajes y análisis sobre fútbol, baloncesto, motor y tenis. Diseño responsive y enfoque editorial." />
-  <link rel="stylesheet" href="/styles.css">
-  <link rel="icon" href="/favicon.ico">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" href="favicon.ico">
 </head>
 <body>
   <!-- Última hora / Breaking news -->
@@ -43,7 +43,7 @@
       </div>
     </section>
 
-    <!-- Editoral layout: main + sidebar -->
+    <!-- Editorial layout: main + sidebar -->
     <section class="editorial wrap" aria-label="Sección principal">
       <div class="editor-top">
         <div class="sport-nav" role="tablist" aria-label="Filtrar por deporte">
@@ -113,16 +113,19 @@
   </footer>
 
   <script>
-    // Utilities & DOM refs
-    const breakingList = document.getElementById('breaking-list');
-    const breakingToggle = document.getElementById('breaking-toggle');
-    const featuredEl = document.getElementById('featured');
-    const grid = document.getElementById('articles-grid');
-    const latestList = document.getElementById('latest-list');
-    const asideFeatured = document.getElementById('aside-featured');
-    const deepGrid = document.getElementById('deep-grid');
-    const filterButtons = [...document.querySelectorAll('.filter-button')];
-    const emptyState = document.getElementById('empty-state');
+    // Utilities & DOM refs (guard against missing elements)
+    const qs = (sel) => document.querySelector(sel);
+    const qsa = (sel) => Array.from(document.querySelectorAll(sel));
+
+    const breakingList = qs('#breaking-list');
+    const breakingToggle = qs('#breaking-toggle');
+    const featuredEl = qs('#featured');
+    const grid = qs('#articles-grid');
+    const latestList = qs('#latest-list');
+    const asideFeatured = qs('#aside-featured');
+    const deepGrid = qs('#deep-grid');
+    const filterButtons = qsa('.filter-button');
+    const emptyState = qs('#empty-state');
 
     let allArticles = [];
     let activeCategory = 'todos';
@@ -133,11 +136,13 @@
     }
 
     function renderBreaking(articles) {
+      if (!breakingList) return;
       const latest = articles.slice(0, 6);
       breakingList.innerHTML = latest.map(a => `<a href="${a.href}" class="breaking-item">${a.title}</a>`).join(' · ');
     }
 
     function renderFeatured(articles) {
+      if (!featuredEl) return;
       const featured = articles.find(a => a.featured) || articles[0];
       if (!featured) { featuredEl.innerHTML = ''; return; }
       featuredEl.innerHTML = `
@@ -155,6 +160,7 @@
     }
 
     function renderGrid(articles) {
+      if (!grid) return;
       const filtered = articles.filter(a => activeCategory === 'todos' || a.category === activeCategory);
       grid.innerHTML = filtered.map(article => `
         <article class="news-card" data-category="${article.category}">
@@ -173,18 +179,31 @@
         </article>
       `).join('');
 
-      emptyState.hidden = filtered.length !== 0;
+      if (emptyState) emptyState.hidden = filtered.length !== 0;
     }
 
     function renderSidebarLists(articles) {
-      const latest = articles.slice(0, 6);
-      latestList.innerHTML = latest.map(a => `<li><a href="${a.href}">${a.title}</a><small>${formatDate(a.date)}</small></li>`).join('');
+      if (latestList) {
+        const latest = articles.slice(0, 6);
+        latestList.innerHTML = latest.map(a => `<li><a href="${a.href}">${a.title}</a><small>${formatDate(a.date)}</small></li>`).join('');
+      }
 
-      const aside = articles.filter(a => a.featured).slice(0,3);
-      asideFeatured.innerHTML = aside.map(a => `<a href="${a.href}" class="aside-card"><img src="${a.image}" alt="${a.title}"><div><h4>${a.title}</h4><small>${formatDate(a.date)}</small></div></a>`).join('');
+      if (asideFeatured) {
+        const aside = articles.filter(a => a.featured).slice(0,3);
+        asideFeatured.innerHTML = aside.map(a => `
+          <a href="${a.href}" class="aside-card">
+            <img src="${a.image}" alt="${a.title}">
+            <div>
+              <h4>${a.title}</h4>
+              <small>${formatDate(a.date)}</small>
+            </div>
+          </a>
+        `).join('');
+      }
     }
 
     function renderDeep(articles) {
+      if (!deepGrid) return;
       const deep = articles.slice(0,3);
       deepGrid.innerHTML = deep.map(a => `
         <article class="deep-card">
@@ -197,6 +216,7 @@
     }
 
     function applyFilters() {
+      if (!filterButtons.length) return;
       filterButtons.forEach(btn => btn.addEventListener('click', () => {
         activeCategory = btn.dataset.filter;
         filterButtons.forEach(b => b.setAttribute('aria-pressed', String(b === btn)));
@@ -204,16 +224,30 @@
       }));
     }
 
-    breakingToggle.addEventListener('click', () => {
-      const expanded = breakingToggle.getAttribute('aria-expanded') === 'true';
-      breakingToggle.setAttribute('aria-expanded', String(!expanded));
-      breakingList.hidden = !expanded; // toggle visibility
-      breakingToggle.textContent = expanded ? 'Mostrar' : 'Ocultar';
-    });
+    if (breakingToggle) {
+      breakingToggle.addEventListener('click', () => {
+        const expanded = breakingToggle.getAttribute('aria-expanded') === 'true';
+        breakingToggle.setAttribute('aria-expanded', String(!expanded));
+        if (breakingList) breakingList.hidden = !expanded; // toggle visibility
+        breakingToggle.textContent = expanded ? 'Mostrar' : 'Ocultar';
+      });
+    }
+
+    // Try loading articles.json using relative path first, fallback to root absolute path
+    function fetchArticles() {
+      return fetch('articles.json').then(r => {
+        if (!r.ok) throw new Error('No relative');
+        return r.json();
+      }).catch(() => {
+        return fetch('/articles.json').then(r => {
+          if (!r.ok) throw new Error('No absolute');
+          return r.json();
+        });
+      });
+    }
 
     // Load articles and render sections
-    fetch('/articles.json')
-      .then(r => r.json())
+    fetchArticles()
       .then(data => {
         allArticles = (data.articles || []).sort((a,b) => new Date(b.date) - new Date(a.date));
         renderBreaking(allArticles);
@@ -225,11 +259,12 @@
       })
       .catch(err => {
         console.error('No se pudieron cargar las noticias', err);
-        grid.innerHTML = '<p class="empty-state">No se pudieron cargar las noticias.</p>';
+        if (grid) grid.innerHTML = '<p class="empty-state">No se pudieron cargar las noticias.</p>';
       });
 
     // Year update
-    document.getElementById('year').textContent = new Date().getFullYear();
+    const yearEl = qs('#year');
+    if (yearEl) yearEl.textContent = new Date().getFullYear();
   </script>
 </body>
 </html>
